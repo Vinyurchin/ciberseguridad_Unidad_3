@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Generador de Contraseñas</title>
+</head>
+<body>
+    <h1>Generador de Contraseñas Seguras</h1>
+    <form method="POST">
+        <label for="longitud">Introduce la longitud de la contraseña (8-20):</label>
+        <input type="number" id="longitud" name="longitud" min="8" max="20" required>
+
+        <fieldset>
+            <legend>Opciones de la contraseña:</legend>
+            <input type="checkbox" id="mayusculas" name="mayusculas" checked>
+            <label for="mayusculas">Incluir mayúsculas</label><br>
+
+            <input type="checkbox" id="minusculas" name="minusculas" checked>
+            <label for="minusculas">Incluir minúsculas</label><br>
+
+            <input type="checkbox" id="numeros" name="numeros" checked>
+            <label for="numeros">Incluir números</label><br>
+
+            <input type="checkbox" id="simbolos" name="simbolos" checked>
+            <label for="simbolos">Incluir caracteres especiales</label><br>
+        </fieldset>
+
+        <button type="submit">Generar Contraseña</button>
+    </form>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% if contrasena %}
+        <p class="resultado">Contraseña generada: <strong>{{ contrasena }}</strong></p>
+    {% endif %}
+</body>
+</html>
