@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Escáner de Puertos</title>
+</head>
+<body>
+    <h1>Escáner de Puertos</h1>
+    <form action="/scan" method="POST">
+        <label for="target">Dirección IP o rango de IPs:</label>
+        <input type="text" id="target" name="target" required><br><br>
+
+        <label for="option">Opciones de escaneo:</label><br>
+        <input type="radio" id="option1" name="option" value="1" required>
+        <label for="option1">Escanear un puerto específico</label><br>
+        <input type="radio" id="option2" name="option" value="2">
+        <label for="option2">Escanear un rango de puertos</label><br>
+        <input type="radio" id="option3" name="option" value="3">
+        <label for="option3">Escanear todos los puertos</label><br><br>
+
+        <div id="port-input" style="display: none;">
+            <label for="port">Puerto:</label>
+            <input type="text" id="port" name="port"><br>
+            <small>Ejemplo: 80</small><br><br>
+        </div>
+
+        <div id="port-range-input" style="display: none;">
+            <label for="port_range">Rango de puertos:</label>
+            <input type="text" id="port_range" name="port_range"><br>
+            <small>Ejemplo: 20-100</small><br><br>
+        </div>
+
+        <button type="submit">Escanear</button>
+    </form>
+
+    <script>
+        const option1 = document.getElementById('option1');
+        const option2 = document.getElementById('option2');
+        const option3 = document.getElementById('option3');
+        const portInput = document.getElementById('port-input');
+        const portRangeInput = document.getElementById('port-range-input');
+
+        option1.addEventListener('change', () => {
+            portInput.style.display = 'block';
+            portRangeInput.style.display = 'none';
+        });
+
+        option2.addEventListener('change', () => {
+            portInput.style.display = 'none';
+            portRangeInput.style.display = 'block';
+        });
+
+        option3.addEventListener('change', () => {
+            portInput.style.display = 'none';
+            portRangeInput.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
