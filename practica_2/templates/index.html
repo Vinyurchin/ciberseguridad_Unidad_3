@@ -11,6 +11,11 @@
     <form method="POST">
         <label for="longitud">Introduce la longitud de la contraseña (8-20):</label>
         <input type="number" id="longitud" name="longitud" min="8" max="20" required>
+        <small>La longitud mínima es de 8 caracteres y la máxima de 20.</small><br><br>
+
+        <label for="cantidad">Cantidad de contraseñas a generar:</label>
+        <input type="number" id="cantidad" name="cantidad" min="1" max="50" required>
+        <small>Se permite hasta un máximo de 50 generadas a la vez.</small><br><br>
 
         <fieldset>
             <legend>Opciones de la contraseña:</legend>
@@ -27,15 +32,20 @@
             <label for="simbolos">Incluir caracteres especiales</label><br>
         </fieldset>
 
-        <button type="submit">Generar Contraseña</button>
+        <button type="submit">Generar Contraseñas</button>
     </form>
 
     {% if error %}
         <p class="error">{{ error }}</p>
     {% endif %}
 
-    {% if contrasena %}
-        <p class="resultado">Contraseña generada: <strong>{{ contrasena }}</strong></p>
+    {% if contrasenas %}
+        <h2>Contraseñas generadas:</h2>
+        <ul>
+            {% for contrasena in contrasenas %}
+                <li>{{ contrasena }}</li>
+            {% endfor %}
+        </ul>
     {% endif %}
 </body>
 </html>

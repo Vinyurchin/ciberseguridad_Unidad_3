@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Sniffer en Tiempo Real</title>
+</head>
+<body>
+    <h1>Sniffer en Tiempo Real</h1>
+    <button id="iniciar">Iniciar Sniffer</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Origen</th>
+                <th>Destino</th>
+                <th>Protocolo</th>
+                <th>Puerto Origen</th>
+                <th>Puerto Destino</th>
+            </tr>
+        </thead>
+        <tbody id="tabla-paquetes">
+        </tbody>
+    </table>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+
+        document.getElementById('iniciar').addEventListener('click', () => {
+            socket.emit('iniciar_sniffer');
+        });
+
+        socket.on('nuevo_paquete', (datos) => {
+            const tabla = document.getElementById('tabla-paquetes');
+            const fila = document.createElement('tr');
+
+            fila.innerHTML = `
+                <td>${datos.origen}</td>
+                <td>${datos.destino}</td>
+                <td>${datos.protocolo}</td>
+                <td>${datos.puerto_origen || 'N/A'}</td>
+                <td>${datos.puerto_destino || 'N/A'}</td>
+            `;
+
+            tabla.appendChild(fila);
+        });
+    </script>
+</body>
+</html>

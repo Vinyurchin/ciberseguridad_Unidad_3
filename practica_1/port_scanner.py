@@ -7,7 +7,6 @@ def scan_ports(target_ip, ports):
     nm = nmap.PortScanner()
     results = []
 
-    # Escanear los puertos especificados
     nm.scan(hosts=target_ip, arguments=f'-p {ports}')
 
     if nm.all_hosts():

@@ -8,7 +8,6 @@ def generar_contrasena(longitud, incluir_mayusculas, incluir_minusculas, incluir
     if longitud < 8 or longitud > 20:
         return "La longitud debe estar entre 8 y 20 caracteres."
 
-    # Construir el conjunto de caracteres basado en las opciones seleccionadas
     caracteres = ""
     if incluir_mayusculas:
         caracteres += string.ascii_uppercase
@@ -29,14 +28,18 @@ def generar_contrasena(longitud, incluir_mayusculas, incluir_minusculas, incluir
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    contrasena = None
+    contrasenas = []
     error = None
 
     if request.method == "POST":
         try:
             longitud = int(request.form["longitud"])
+            cantidad = int(request.form["cantidad"])
+
             if longitud < 8 or longitud > 20:
                 error = "La longitud debe estar entre 8 y 20 caracteres."
+            elif cantidad < 1 or cantidad > 50:
+                error = "La cantidad de contraseñas debe estar entre 1 y 50."
             else:
                 incluir_mayusculas = "mayusculas" in request.form
                 incluir_minusculas = "minusculas" in request.form
@@ -44,13 +47,15 @@ def index():
                 incluir_simbolos = "simbolos" in request.form
 
                 if not (incluir_mayusculas or incluir_minusculas or incluir_numeros or incluir_simbolos):
-                    error = "Debes seleccionar al menos una opción para generar la contraseña."
+                    error = "Debes seleccionar al menos una opción para generar las contraseñas."
                 else:
-                    contrasena = generar_contrasena(longitud, incluir_mayusculas, incluir_minusculas, incluir_numeros, incluir_simbolos)
+                    # Generar la cantidad de contraseñas solicitadas
+                    for _ in range(cantidad):
+                        contrasenas.append(generar_contrasena(longitud, incluir_mayusculas, incluir_minusculas, incluir_numeros, incluir_simbolos))
         except ValueError:
-            error = "Por favor, introduce un número válido."
+            error = "Por favor, introduce valores válidos."
 
-    return render_template("index.html", contrasena=contrasena, error=error)
+    return render_template("index.html", contrasenas=contrasenas, error=error)
 
 if __name__ == "__main__":
     app.run(debug=True)
